@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
+@import "./styles/plyr-theme.css";
 
 html,
 body,
@@ -11,6 +12,17 @@ body,
 body {
   font-family: var(--font-body);
   color: var(--color-text);
-  background: #ffffff;
+  background: var(--color-surface);
   overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

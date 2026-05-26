@@ -127,25 +127,32 @@ export function QuizProvider({
     [answers],
   );
 
-  const scrollToSummary = useCallback(() => {
-    summaryOverviewRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollBehavior = useMemo((): ScrollBehavior => {
+    if (typeof window === "undefined") return "smooth";
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
   }, []);
 
+  const scrollToSummary = useCallback(() => {
+    summaryOverviewRef.current?.scrollIntoView({ behavior: scrollBehavior });
+  }, [scrollBehavior]);
+
   const scrollToReview = useCallback(() => {
-    summaryReviewRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    summaryReviewRef.current?.scrollIntoView({ behavior: scrollBehavior });
+  }, [scrollBehavior]);
 
   useEffect(() => {
     if (isComplete && !hasScrolledToSummary.current) {
       hasScrolledToSummary.current = true;
       requestAnimationFrame(() => {
-        summaryOverviewRef.current?.scrollIntoView({ behavior: "smooth" });
+        summaryOverviewRef.current?.scrollIntoView({ behavior: scrollBehavior });
       });
     }
     if (!isComplete) {
       hasScrolledToSummary.current = false;
     }
-  }, [isComplete]);
+  }, [isComplete, scrollBehavior]);
 
   const value: QuizContextValue = {
     steps,

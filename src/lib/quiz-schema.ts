@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { resolveVideoUrl } from "./resolve-video-url";
 
 const questionSchema = z.object({
   text: z.string().min(1),
@@ -37,5 +38,8 @@ export async function loadQuiz(): Promise<QuizData> {
     throw new Error(`Failed to load quiz.json: ${res.status}`);
   }
   const json: unknown = await res.json();
-  return quizSchema.parse(json);
+  const steps = quizSchema.parse(json);
+  return steps.map((step) =>
+    step.video ? { ...step, video: resolveVideoUrl(step.video) } : step,
+  );
 }

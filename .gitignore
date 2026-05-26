@@ -3,3 +3,7 @@ dist
 dist-ssr
 *.local
 .DS_Store
+.vercel
+.env*
+!.env.example
+public/videos/*.mp4

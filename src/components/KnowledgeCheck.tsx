@@ -37,18 +37,19 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
   };
 
   return (
-    <section className="flex h-[100dvh] w-full shrink-0 snap-start snap-always bg-white">
-      <div className="flex h-full min-h-0 w-full gap-[10px] p-[10px] md:flex-row">
-        <div className="min-h-0 flex-1 md:w-1/2">
+    <section className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-always bg-[var(--color-surface)] md:h-[100dvh]">
+      <div className="flex min-h-0 w-full flex-col gap-2 p-2 pt-12 md:h-full md:flex-row md:gap-[10px] md:p-[10px] md:pt-[10px]">
+        <div className="min-h-[40dvh] flex-1 md:min-h-0 md:w-1/2">
           <ContentPanel title={step.title} body={step.body} />
         </div>
         <div
-          className="h-[3px] w-full shrink-0 md:h-auto md:w-[3px]"
+          className="h-px w-full shrink-0 md:h-auto md:w-px"
           style={{ backgroundColor: "var(--color-blue)" }}
           aria-hidden
         />
         <div className="min-h-0 flex-1 md:w-1/2">
           <QuestionPanel
+            questionKey={`${stepIndex}-${questionIndex}`}
             question={question}
             selectedIndex={selectedIndex}
             submitted={submitted}

@@ -12,28 +12,35 @@ export function StepPicker({
   onSelect,
 }: StepPickerProps) {
   return (
-    <nav className="flex flex-col gap-[10px]" aria-label="Velg steg">
-      {steps.map((step, index) => (
-        <button
-          key={index}
-          type="button"
-          onClick={() => onSelect(index)}
-          className="block w-full border-[3px] border-solid px-[10px] py-[10px] text-left text-[20px] leading-normal transition-colors"
-          style={{
-            fontFamily: "var(--font-question)",
-            borderRadius: 0,
-            backgroundColor:
-              index === activeStepIndex
+    <nav className="flex flex-col gap-2" aria-label="Velg steg">
+      {steps.map((step, index) => {
+        const active = index === activeStepIndex;
+        return (
+          <button
+            key={index}
+            type="button"
+            onClick={() => onSelect(index)}
+            className={[
+              "block w-full border-2 border-solid px-3 py-2 text-left text-base leading-snug",
+              "transition-[background-color,filter] duration-150 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-blue)]/40",
+              "hover:brightness-[0.97]",
+            ].join(" ")}
+            style={{
+              fontFamily: "var(--font-question)",
+              borderRadius: "var(--radius-sm)",
+              backgroundColor: active
                 ? "var(--color-blue-light-active)"
                 : "var(--color-blue-light)",
-            borderColor: "var(--color-blue)",
-            color: "var(--color-text)",
-            fontWeight: index === activeStepIndex ? 600 : 400,
-          }}
-        >
-          Steg {index + 1}: {step.title}
-        </button>
-      ))}
+              borderColor: active ? "var(--color-blue-dark)" : "var(--color-blue)",
+              color: "var(--color-text)",
+              fontWeight: active ? 600 : 400,
+            }}
+            aria-current={active ? "step" : undefined}
+          >
+            Steg {index + 1}: {step.title}
+          </button>
+        );
+      })}
     </nav>
   );
 }

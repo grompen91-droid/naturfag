@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useQuiz } from "../context/QuizProvider";
+import { fadeSlide, springSnappy, staggerContainer, staggerItem, useMotionTransition, useMotionVariants } from "../lib/motion";
 import { AnswerButton, getAnswerState } from "./AnswerButton";
 import { QuestionNav } from "./QuestionNav";
 import { StepPicker } from "./StepPicker";
@@ -18,6 +20,10 @@ export function SummaryReview() {
   } = useQuiz();
 
   const current = flatQuestions[reviewFlatIndex];
+  const transition = useMotionTransition(springSnappy);
+  const panelVariants = useMotionVariants(fadeSlide);
+  const listVariants = useMotionVariants(staggerContainer);
+  const itemVariants = useMotionVariants(staggerItem);
 
   const questionsForStep = useMemo(
     () => flatQuestions.filter((q) => q.stepIndex === reviewStepIndex),
@@ -30,9 +36,13 @@ export function SummaryReview() {
     }
   }, [current, setReviewStepIndex]);
 
+  const selectFlatIndex = (index: number) => {
+    setReviewFlatIndex(index);
+  };
+
   const handleStepSelect = (stepIndex: number) => {
-    setReviewStepIndex(stepIndex);
     const first = flatQuestions.find((q) => q.stepIndex === stepIndex);
+    setReviewStepIndex(stepIndex);
     if (first) {
       setReviewFlatIndex(first.flatIndex);
     }
@@ -40,13 +50,13 @@ export function SummaryReview() {
 
   const goBack = () => {
     if (reviewFlatIndex > 0) {
-      setReviewFlatIndex(reviewFlatIndex - 1);
+      selectFlatIndex(reviewFlatIndex - 1);
     }
   };
 
   const goNext = () => {
     if (reviewFlatIndex < flatQuestions.length - 1) {
-      setReviewFlatIndex(reviewFlatIndex + 1);
+      selectFlatIndex(reviewFlatIndex + 1);
     }
   };
 
@@ -54,23 +64,32 @@ export function SummaryReview() {
     return null;
   }
 
-  const { question, userAnswer, stepIndex, questionIndex } = current;
+  const { question, userAnswer, questionIndex, stepTitle } = current;
   const selectedIndex = userAnswer?.selectedIndex ?? null;
   const submitted = userAnswer !== undefined;
+  const wasCorrect = userAnswer?.isCorrect;
 
   return (
     <section
       ref={summaryReviewRef}
-      className="flex h-[100dvh] w-full shrink-0 snap-start snap-always bg-white"
+      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-always bg-[var(--color-surface)] md:h-[100dvh]"
+      aria-labelledby="review-heading"
     >
-      <div className="flex h-full min-h-0 w-full gap-[10px] p-[10px] md:flex-row">
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-white md:w-1/2">
+      <div className="flex min-h-0 w-full flex-col gap-2 p-2 pt-12 md:h-full md:flex-row md:gap-[10px] md:p-[10px] md:pt-[10px]">
+        <aside className="flex min-h-0 flex-1 flex-col overflow-hidden md:w-1/2">
           <h2
-            className="mb-[10px] text-[40px] leading-normal text-[var(--color-text)]"
-            style={{ fontFamily: "var(--font-title)" }}
+            id="review-heading"
+            className="mb-0.5 text-xl leading-tight md:text-2xl"
+            style={{ fontFamily: "var(--font-title)", color: "var(--color-text)" }}
           >
             Gjennomgang
           </h2>
+          <p
+            className="mb-3 text-sm"
+            style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}
+          >
+            Se hva du svarte, og hvilket alternativ som var riktig.
+          </p>
           <StepPicker
             steps={steps}
             activeStepIndex={reviewStepIndex}
@@ -80,52 +99,89 @@ export function SummaryReview() {
             questions={questionsForStep}
             activeFlatIndex={reviewFlatIndex}
             isComplete={isComplete}
-            onSelect={setReviewFlatIndex}
+            onSelect={selectFlatIndex}
           />
-        </div>
+        </aside>
         <div
-          className="h-[3px] w-full shrink-0 md:h-auto md:w-[3px]"
+          className="h-px w-full shrink-0 md:h-auto md:w-px"
           style={{ backgroundColor: "var(--color-blue)" }}
           aria-hidden
         />
         <div className="flex min-h-0 flex-1 flex-col items-center md:w-1/2">
-          <div className="flex h-full min-h-0 w-full max-w-[400px] flex-col px-[10px] py-[80px]">
-            <p
-              className="mb-[10px] text-[20px] leading-normal text-[var(--color-text)]"
-              style={{ fontFamily: "var(--font-question)" }}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={reviewFlatIndex}
+              className="flex h-full min-h-0 w-full max-w-[400px] flex-col px-3 py-6 md:px-[10px] md:py-10"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={panelVariants}
+              transition={transition}
             >
-              Steg {stepIndex + 1} · Spørsmål {questionIndex + 1}
-            </p>
-            <p
-              className="mb-[10px] text-[20px] leading-normal text-[var(--color-text)]"
-              style={{ fontFamily: "var(--font-question)" }}
-            >
-              {question.text}
-            </p>
-            <div className="flex min-h-0 flex-1 flex-col gap-[10px] overflow-y-auto">
-              {question.options.map((option, index) => (
-                <AnswerButton
-                  key={index}
-                  label={option}
-                  state={getAnswerState(
-                    index,
-                    question.answer,
-                    selectedIndex,
-                    submitted,
-                  )}
-                  readOnly
+              <motion.p
+                className="mb-1 text-sm"
+                style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}
+                variants={itemVariants}
+              >
+                {stepTitle} · spørsmål {questionIndex + 1} av {questionsForStep.length}
+              </motion.p>
+              {submitted && (
+                <motion.p
+                  className="mb-2 text-sm font-medium"
+                  role="status"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={transition}
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    color: wasCorrect ? "var(--color-correct)" : "var(--color-incorrect)",
+                  }}
+                >
+                  {wasCorrect
+                    ? "Du svarte riktig på dette spørsmålet."
+                    : "Du svarte feil. Riktig svar er markert under."}
+                </motion.p>
+              )}
+              <motion.p
+                className="mb-3 text-lg font-medium leading-snug"
+                style={{ fontFamily: "var(--font-question)", color: "var(--color-text)" }}
+                variants={itemVariants}
+              >
+                {question.text}
+              </motion.p>
+              <motion.div
+                className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto"
+                role="group"
+                aria-label="Dine svar"
+                variants={listVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {question.options.map((option, index) => (
+                  <motion.div key={index} variants={itemVariants} layout>
+                    <AnswerButton
+                      label={option}
+                      state={getAnswerState(
+                        index,
+                        question.answer,
+                        selectedIndex,
+                        submitted,
+                      )}
+                      readOnly
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+              <div className="mt-3">
+                <QuestionNav
+                  onBack={goBack}
+                  onNext={goNext}
+                  canBack={reviewFlatIndex > 0}
+                  canNext={reviewFlatIndex < flatQuestions.length - 1}
                 />
-              ))}
-            </div>
-            <div className="mt-[10px]">
-              <QuestionNav
-                onBack={goBack}
-                onNext={goNext}
-                canBack={reviewFlatIndex > 0}
-                canNext={reviewFlatIndex < flatQuestions.length - 1}
-              />
-            </div>
-          </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

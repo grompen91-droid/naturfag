@@ -1,20 +1,33 @@
 :root {
-  /* Figma: Foundation /Blue */
-  --color-blue: #32a5ec;
-  --color-blue-light: #ebf6fd;
-  --color-blue-light-active: #bfe3f9;
-  --color-blue-dark: #123a53;
-  /* Figma: answer feedback borders */
-  --color-correct: #2eff04;
-  --color-incorrect: #ff0004;
-  /* Figma: video section */
-  --color-video-bg: #b9a9a9;
-  /* Figma: typography */
-  --color-text: #000000;
+  /* Tinted neutrals (hue ~220, school / nature blue) */
+  --color-surface: oklch(99% 0.008 220);
+  --color-surface-muted: oklch(96.5% 0.012 220);
+  --color-text: oklch(24% 0.025 220);
+  --color-text-muted: oklch(42% 0.02 220);
+
+  /* Brand blue */
+  --color-blue: oklch(68% 0.14 230);
+  --color-blue-light: oklch(95% 0.04 230);
+  --color-blue-light-active: oklch(88% 0.06 230);
+  --color-blue-dark: oklch(32% 0.08 230);
+  --color-on-blue: oklch(99% 0.005 220);
+
+  /* Semantic feedback (not neon) */
+  --color-correct: oklch(52% 0.16 145);
+  --color-correct-surface: oklch(95% 0.04 145);
+  --color-incorrect: oklch(52% 0.18 25);
+  --color-incorrect-surface: oklch(95% 0.04 25);
+
+  --color-video-bg: oklch(78% 0.02 30);
+
   --font-title: "Pacifico", cursive;
   --font-body: "Inter", system-ui, sans-serif;
   --font-question: "Roboto", system-ui, sans-serif;
   --font-nav: "Inter", system-ui, sans-serif;
-  /* Figma: answer + nav borders */
-  --border-figma: 3px solid;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-focus: 0 0 0 3px oklch(68% 0.14 230 / 0.35);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
 }
