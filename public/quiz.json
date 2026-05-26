@@ -1,49 +1,180 @@
 [
   {
-    "video": "/videos/intro.mp4",
-    "title": "Ernæring og helse",
+    "video": "/videos/klipp1.mp4",
+    "title": "Atomkraft og Fornybar Energi",
     "body": [
-      "I dette steget ser du en kort introduksjonsvideo om kosthold og energi.",
-      "Les teksten til venstre, og svar på spørsmålene til høyre. Du kan bla mellom spørsmålene med Tilbake og Neste spørsmål."
+      "Et atomkraftverk er en stor bygning som lager strøm. Det lager veldig mye strøm, nok til mange tusen hjem. Kraftverket jobber hele dagen og hele natten, uansett vær. Mange land i verden bruker atomkraft. Frankrike er et av landene som bruker mest atomkraft. Der kommer nesten all strømmen fra atomkraftverk. Andre land som USA, Kina og Russland bruker det også. Noen synes atomkraft er en god løsning. Det lager mye strøm uten å slippe ut CO₂. Det er bra for klimaet. Og det tar ikke så mye plass som vindmøller og solceller. Andre er imot atomkraft. De synes det er for farlig. Hvis noe går galt kan det bli en stor katastrofe. Det er vanskelig å rydde opp etterpå, og det kan ta mange tiår. Avfallet fra atomkraft er også et problem. Det er farlig og må lagres på et trygt sted i veldig lang tid. Ingen vil egentlig ha dette avfallet i nærheten av der de bor. Det koster også veldig mye penger å bygge et atomkraftverk. Det tar lang tid, ofte mange år, før det er ferdig. Noen ganger tar det enda lenger tid enn planlagt. Verden endrer seg. Klimaet blir varmere og vi trenger mer ren energi. Derfor diskuterer mange land nå om de skal bygge flere atomkraftverk. Noen land som stengte dem har begynt å tenke på å åpne dem igjen. Norge har valgt en annen vei. Vi har mye vann, vind og natur som gir oss nok strøm. Derfor har vi aldri bygget atomkraftverk her. Men debatten fortsetter. Er atomkraft farlig eller nødvendig? Er det fremtiden eller fortiden? Det er ikke ett enkelt svar, og folk er fortsatt uenige."
     ],
     "questions": [
       {
-        "text": "Hva er den beste kilden for sunt fett?",
-        "options": ["Bearbeidet kjøtt", "Fisk og nøtter", "Sukkerholdig brus"],
-        "answer": 1
-      },
-      {
-        "text": "Hvor mange kalorier gir omtrent 1 gram karbohydrat?",
-        "options": ["2 kcal", "4 kcal", "9 kcal"],
-        "answer": 1
-      },
-      {
-        "text": "Hvilket næringsstoff er viktigst for muskelbygging?",
-        "options": ["Protein", "Vitamin C", "Fiber"],
+        "text": "Hva er et atomkraftverk?",
+        "options": [
+          "En stor bygning som lager strøm til mange tusen hjem",
+          "En fabrikk som lager batterier til biler",
+          "Et kraftverk som bare jobber om dagen"
+        ],
         "answer": 0
+      },
+      {
+        "text": "Hvilket land bruker mest atomkraft i Europa?",
+        "options": [
+          "Tyskland",
+          "Norge",
+          "Frankrike"
+        ],
+        "answer": 2
+      },
+      {
+        "text": "Hva er bra med atomkraft?",
+        "options": [
+          "Det lager mye strøm uten å slippe ut CO₂",
+          "Det er veldig billig å bygge",
+          "Avfallet er lett å håndtere"
+        ],
+        "answer": 0
+      },
+      {
+        "text": "Hva er problemene med atomkraft?",
+        "options": [
+          "Det lager for mye CO₂",
+          "Det kan være farlig, og en ulykke kan føre til stor katastrofe",
+          "Det tar for mye plass"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hvorfor er avfallet et problem?",
+        "options": [
+          "Det lukter veldig vondt",
+          "Det er farlig og må lagres trygt i veldig lang tid",
+          "Det er dyrt å frakte"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hvorfor tar det lang tid å bygge et atomkraftverk?",
+        "options": [
+          "Det mangler alltid arbeidere",
+          "Det koster mye og tar ofte mange år, noen ganger lenger enn planlagt",
+          "Staten må alltid godkjenne hver enkelt murstein"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hva bruker Norge i stedet for atomkraft?",
+        "options": [
+          "Kull og olje",
+          "Vann, vind og natur",
+          "Solenergi fra Sahara"
+        ],
+        "answer": 1
       }
     ]
   },
   {
-    "title": "Miljø og bærekraft",
+    "video": "/videos/klipp2.mp4",
+    "title": "Bærekraftig Matproduksjon",
     "body": [
-      "Dette steget har ingen video — bare tekst og spørsmål.",
-      "Tenk over hvordan matvalg påvirker klima og natur."
+      "Norge er et land som dyrker mye mat, blant annet erter, bønner, grønnkål og bygg. Dette er en bærekraftig måte å produsere mat på i forhold til kjøtt, meieriprodukter og egg. Men mesteparten av det vi dyrker blir gjort om til kraftfôr for dyr, som deretter blir gjort om til kjøtt, meieriprodukter og egg. Siden dyr ikke kan produsere mer energi enn de tar inn, går det tapt energi i kjeden, og mye av energien fra det vi dyrker forsvinner på den måten. Hvis vi vil at mindre av denne energien skal gå tapt og at vi skal ha mindre utslipp, kan vi blant annet spise mer av avlingen direkte som plantemat i stedet for via dyr. En annen måte å spise mer bærekraftig på er å spise mat som er i sesong, for da bruker vi det som kan dyrkes og høstes i Norge nå. Kortreist mat krever også mindre transport, og sesongmat passer ofte bedre til det som faktisk produseres her. Vi kan også minske matsvinn, for når mat kastes har vi brukt ressurser uten at noen får spist den. En god måte å minske matsvinn på er å spise all maten du har kjøpt før den går ut på dato, og å ikke kjøpe mer mat enn du rekker å spise."
     ],
     "questions": [
       {
-        "text": "Hvilken matgruppe har typisk lavest klimagassutslipp per kalori?",
-        "options": ["Storfe", "Kylling", "Belgfrukter og grønnsaker"],
+        "text": "Hvilke av disse dyrkes i Norge?",
+        "options": [
+          "Bønner",
+          "Søtpotet",
+          "Paprika",
+          "Squash"
+        ],
+        "answer": 0
+      },
+      {
+        "text": "Kan dyr produsere mer energi enn de tar inn?",
+        "options": [
+          "Ja",
+          "Nei"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hvordan kan vi redusere energitap i matkjeden?",
+        "options": [
+          "Spise mer plantebasert mat",
+          "Importere mat fra andre land",
+          "Spise mest kjøtt og meieriprodukter"
+        ],
+        "answer": 0
+      },
+      {
+        "text": "Hvordan kan vi spise mer bærekraftig med mindre transport?",
+        "options": [
+          "Importere mat fra andre land",
+          "Spise mat som er i sesong",
+          "Spise mest kjøtt og meieriprodukter"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hvordan kan du minske matsvinn?",
+        "options": [
+          "Bare spise økologisk mat",
+          "Vet ikke",
+          "Spise all maten som du har kjøpt",
+          "Spise all mat som er tilgjengelig"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "title": "Bærekraftig mat",
+    "body": [
+      "hva er bærekraftig mat? når en matvare blir kalt bærekraftig vil det si at varen er produsert på en måte som ikke legger igjen et stort fot avtrykk. mye av kjøttproduksjon har veldig stort miljøavtrykk. i sør asia og amerika er det store scampi farmer som er lagt på mangroveskog, mangroveskog lagrer veldig mye karbondioksid, denne store produksjonen av scampi fører til store naturødeleggelser og destruksjonen av naturlige habitater for dyr. scampi farmene tar opp store mengder med land og ødelegger sjøbunnen som fører til at fisk og andre arter dør ut i området. bærekraftig mat er mye bedre for kloden fordi det har veldig lite miljø fot avtrykk"
+    ],
+    "questions": [
+      {
+        "text": "Hva er bærekraftig mat?",
+        "options": [
+          "Mat som er produsert på en måte som ikke legger igjen et stort fot avtrykk",
+          "Mat som er produsert på en måte som legger igjen et stort fot avtrykk"
+        ],
+        "answer": 0
+      },
+      {
+        "text": "Hva er nedsidene til scampi farmer?",
+        "options": [
+          "Scampi smaker dårlig",
+          "Dyr produksjon",
+          "Ødelegger habitater"
+        ],
         "answer": 2
       },
       {
-        "text": "Hva betyr «bærekraftig kosthold»?",
+        "text": "Hva er bærekraftig mat?",
         "options": [
-          "Kun å spise importert mat",
-          "Mat som er god for helse og miljø over tid",
-          "Å unngå all mat med karbohydrater"
+          "Mat som kan bære mye",
+          "Mat som er produsert på en miljøvennlig måte",
+          "Mat som er billig å produsere"
         ],
         "answer": 1
+      },
+      {
+        "text": "Hva slags skader forårsaker scampi farmer?",
+        "options": [
+          "Det skader mennesker fordi de kan drukne i farmene",
+          "Det ødelegger mangroveskoger",
+          "Det ødelegger skoleruter for elever"
+        ],
+        "answer": 1
+      },
+      {
+        "text": "Hvorfor er bærekraftig mat viktig?",
+        "options": [
+          "Fordi det har lite miljøfotavtrykk",
+          "Fordi det smaker bedre",
+          "Fordi det kan bære mye"
+        ],
+        "answer": 0
       }
     ]
   }
