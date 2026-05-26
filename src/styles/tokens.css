@@ -1,0 +1,20 @@
+:root {
+  /* Figma: Foundation /Blue */
+  --color-blue: #32a5ec;
+  --color-blue-light: #ebf6fd;
+  --color-blue-light-active: #bfe3f9;
+  --color-blue-dark: #123a53;
+  /* Figma: answer feedback borders */
+  --color-correct: #2eff04;
+  --color-incorrect: #ff0004;
+  /* Figma: video section */
+  --color-video-bg: #b9a9a9;
+  /* Figma: typography */
+  --color-text: #000000;
+  --font-title: "Pacifico", cursive;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-question: "Roboto", system-ui, sans-serif;
+  --font-nav: "Inter", system-ui, sans-serif;
+  /* Figma: answer + nav borders */
+  --border-figma: 3px solid;
+}

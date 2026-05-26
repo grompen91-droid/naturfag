@@ -1,0 +1,50 @@
+[
+  {
+    "video": "/videos/intro.mp4",
+    "title": "Ernæring og helse",
+    "body": [
+      "I dette steget ser du en kort introduksjonsvideo om kosthold og energi.",
+      "Les teksten til venstre, og svar på spørsmålene til høyre. Du kan bla mellom spørsmålene med Tilbake og Neste spørsmål."
+    ],
+    "questions": [
+      {
+        "text": "Hva er den beste kilden for sunt fett?",
+        "options": ["Bearbeidet kjøtt", "Fisk og nøtter", "Sukkerholdig brus"],
+        "answer": 1
+      },
+      {
+        "text": "Hvor mange kalorier gir omtrent 1 gram karbohydrat?",
+        "options": ["2 kcal", "4 kcal", "9 kcal"],
+        "answer": 1
+      },
+      {
+        "text": "Hvilket næringsstoff er viktigst for muskelbygging?",
+        "options": ["Protein", "Vitamin C", "Fiber"],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "title": "Miljø og bærekraft",
+    "body": [
+      "Dette steget har ingen video — bare tekst og spørsmål.",
+      "Tenk over hvordan matvalg påvirker klima og natur."
+    ],
+    "questions": [
+      {
+        "text": "Hvilken matgruppe har typisk lavest klimagassutslipp per kalori?",
+        "options": ["Storfe", "Kylling", "Belgfrukter og grønnsaker"],
+        "answer": 2
+      },
+      {
+        "text": "Hva betyr «bærekraftig kosthold»?",
+        "options": [
+          "Kun å spise importert mat",
+          "Mat som er god for helse og miljø over tid",
+          "Å unngå all mat med karbohydrater"
+        ],
+        "answer": 1
+      }
+    ]
+  }
+]
