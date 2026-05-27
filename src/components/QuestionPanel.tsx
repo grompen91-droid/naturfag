@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { AnswerButton, getAnswerState } from "./AnswerButton";
+import { AiHintPanel } from "./AiHintPanel";
 import { KeyboardShortcutsHelp } from "./KeyboardShortcutsHelp";
 import { QuestionNav } from "./QuestionNav";
 import { useQuizKeyboard } from "../hooks/useQuizKeyboard";
@@ -211,6 +212,16 @@ export function QuestionPanel({
                 </button>
               </motion.p>
             )}
+
+            <AiHintPanel
+              questionKey={questionKey}
+              question={question.text}
+              options={question.options}
+              correctIndex={question.answer}
+              submitted={submitted}
+              isCorrect={isCorrect}
+              selectedIndex={selectedIndex}
+            />
 
             <AnimatePresence mode="popLayout">
               {feedback && (
