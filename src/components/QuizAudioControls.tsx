@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useQuizAudio } from "../context/QuizAudioProvider";
 import { useDismissiblePanel } from "../hooks/useDismissiblePanel";
 import { popoverPanel, useMotionVariants } from "../lib/motion";
-import { THEME_TRACK } from "../lib/quiz-audio-tracks";
+import { ENDING_TRACKS, THEME_TRACK } from "../lib/quiz-audio-tracks";
 
 export function QuizAudioControls() {
   const {
@@ -85,14 +85,23 @@ export function QuizAudioControls() {
                   />
                   <span>{THEME_TRACK.label}</span>
                 </label>
+                <label className="quiz-audio-toolbar__choice">
+                  <input
+                    type="radio"
+                    name="live-during"
+                    checked={duringTrack === "strategisk"}
+                    onChange={() => setDuringTrack("strategisk")}
+                  />
+                  <span>{ENDING_TRACKS.strategisk.label}</span>
+                </label>
               </fieldset>
             )}
 
             <fieldset className="quiz-audio-toolbar__group">
               <legend>{isComplete ? "Avslutningssang" : "Når du er ferdig"}</legend>
-              {duringTrack === "theme" && !isComplete && (
+              {duringTrack !== "none" && !isComplete && (
                 <p className="quiz-audio-toolbar__hint">
-                  {THEME_TRACK.label} spilles allerede under quizen.
+                  {duringTrack === "theme" ? THEME_TRACK.label : ENDING_TRACKS.strategisk.label} spilles allerede under quizen.
                 </p>
               )}
               {endingOptions.map((track) => (

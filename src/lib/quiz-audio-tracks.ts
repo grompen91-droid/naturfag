@@ -1,4 +1,4 @@
-export type DuringTrackId = "none" | "theme";
+export type DuringTrackId = "none" | "theme" | "strategisk";
 export type EndingTrackId = "theme" | "ending" | "kjernens" | "strategisk";
 
 export type QuizTrack = {
@@ -44,10 +44,13 @@ export const ENDING_TRACKS: Record<Exclude<EndingTrackId, "theme">, QuizTrack> =
 export function getAvailableEndingTracks(
   duringTrack: DuringTrackId,
 ): EndingTrackId[] {
-  if (duringTrack === "theme") {
-    return ["ending", "kjernens", "strategisk"];
-  }
-  return ["theme", "ending", "kjernens", "strategisk"];
+  const all: EndingTrackId[] = ["theme", "ending", "kjernens", "strategisk"];
+  return all.filter((id) => id !== duringTrack);
+}
+
+export function getDuringTrack(duringTrack: Exclude<DuringTrackId, "none">): QuizTrack {
+  if (duringTrack === "theme") return THEME_TRACK;
+  return { ...ENDING_TRACKS[duringTrack], loop: true };
 }
 
 export function getEndingTrackOptions(duringTrack: DuringTrackId): QuizTrack[] {

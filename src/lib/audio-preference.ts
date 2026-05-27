@@ -71,9 +71,9 @@ export function readAudioPreferences(): AudioPreferences {
 
     return {
       consent: "with-audio",
-      duringTrack: duringTrack === "theme" ? "theme" : "none",
+      duringTrack: duringTrack === "theme" || duringTrack === "strategisk" ? duringTrack : "none",
       endingTrack: normalizeEndingTrack(
-        duringTrack === "theme" ? "theme" : "none",
+        duringTrack === "theme" || duringTrack === "strategisk" ? duringTrack : "none",
         endingRaw,
       ),
       muted,

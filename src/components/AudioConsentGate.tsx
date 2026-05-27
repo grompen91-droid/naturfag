@@ -6,6 +6,7 @@ import { useAudioPreview } from "../hooks/useAudioPreview";
 import {
   getAvailableEndingTracks,
   getEndingTrackOptions,
+  ENDING_TRACKS,
   THEME_TRACK,
   type DuringTrackId,
   type EndingTrackId,
@@ -112,7 +113,7 @@ export function AudioConsentGate({
             className="audio-consent__hint"
             style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}
           >
-            Kun temamusikken kan spilles på loop mens du jobber.
+            Valgt sang spilles på loop mens du jobber med quizen.
           </p>
           <div className="audio-consent__option-row">
             <label className="audio-consent__option">
@@ -159,6 +160,31 @@ export function AudioConsentGate({
               onPreview={() => preview(THEME_TRACK.id, THEME_TRACK.src)}
             />
           </div>
+          <div className="audio-consent__option-row">
+            <label className="audio-consent__option">
+              <input
+                type="radio"
+                name="during-track"
+                value="strategisk"
+                checked={duringTrack === "strategisk"}
+                onChange={() => setDuringTrack("strategisk")}
+              />
+              <span>
+                <strong style={{ fontFamily: "var(--font-nav)" }}>{ENDING_TRACKS.strategisk.label}</strong>
+                <span
+                  className="audio-consent__option-desc"
+                  style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}
+                >
+                  {ENDING_TRACKS.strategisk.description}
+                </span>
+              </span>
+            </label>
+            <TrackPreviewButton
+              label={ENDING_TRACKS.strategisk.label}
+              isPreviewing={previewingId === ENDING_TRACKS.strategisk.id}
+              onPreview={() => preview(ENDING_TRACKS.strategisk.id, ENDING_TRACKS.strategisk.src)}
+            />
+          </div>
         </fieldset>
 
         <fieldset className="audio-consent__fieldset">
@@ -168,13 +194,14 @@ export function AudioConsentGate({
           >
             Når du er ferdig
           </legend>
-          {duringTrack === "theme" ? (
+          {duringTrack !== "none" ? (
             <p
               className="audio-consent__hint"
               style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}
             >
-              Du hører allerede {THEME_TRACK.label} under quizen, så den kan ikke spilles
-              på nytt til slutt.
+              Du hører allerede{" "}
+              {duringTrack === "theme" ? THEME_TRACK.label : ENDING_TRACKS.strategisk.label}{" "}
+              under quizen, så den kan ikke spilles på nytt til slutt.
             </p>
           ) : (
             <p

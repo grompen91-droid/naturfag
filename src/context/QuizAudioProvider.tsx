@@ -15,6 +15,7 @@ import {
   type AudioPreferences,
 } from "../lib/audio-preference";
 import {
+  getDuringTrack,
   getEndingTrackOptions,
   getTrackById,
   type DuringTrackId,
@@ -67,8 +68,8 @@ export function QuizAudioProvider({ children }: { children: ReactNode }) {
 
   const activeTrack = useMemo(() => {
     if (!audioEnabled || prefs.muted) return null;
-    if (!isComplete && prefs.duringTrack === "theme") {
-      return getTrackById("theme");
+    if (!isComplete && prefs.duringTrack !== "none") {
+      return getDuringTrack(prefs.duringTrack);
     }
     if (isComplete) {
       return getTrackById(prefs.endingTrack);
