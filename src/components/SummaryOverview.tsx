@@ -47,7 +47,7 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
     <section
       ref={summaryOverviewRef}
       data-snap-section="summary-overview"
-      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-always flex-col overflow-hidden bg-[var(--color-surface)] p-3 pt-14 md:px-12 md:py-10 md:pt-10"
+      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-stop flex-col bg-[var(--color-surface)] p-3 pt-14 md:px-12 md:py-10 md:pb-12"
       aria-labelledby="summary-heading"
     >
       <h2
@@ -166,10 +166,7 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
         )}
       </AnimatePresence>
 
-      <div
-        className="min-h-0 flex-1 space-y-6 overflow-y-auto"
-        style={{ contentVisibility: "auto", containIntrinsicSize: "0 600px" }}
-      >
+      <div className="space-y-6 pb-2">
         {steps.map((step, stepIndex) => (
           <motion.div
             key={stepIndex}

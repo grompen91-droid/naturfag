@@ -93,7 +93,7 @@ export function SummaryReview() {
     <section
       ref={summaryReviewRef}
       data-snap-section="summary-review"
-      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-always bg-[var(--color-surface)] md:h-[100dvh]"
+      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-stop bg-[var(--color-surface)] md:h-[100dvh]"
       aria-labelledby="review-heading"
     >
       <div className="flex min-h-0 w-full flex-col gap-2 p-2 pt-12 md:h-full md:flex-row md:gap-[10px] md:p-[10px] md:pt-[10px]">
@@ -117,7 +117,7 @@ export function SummaryReview() {
             </p>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-auto">
             <p
               className="mb-1.5 text-xs font-medium"
               style={{ fontFamily: "var(--font-nav)", color: "var(--color-text-muted)" }}
@@ -159,7 +159,7 @@ export function SummaryReview() {
         />
 
         <div className="flex w-full min-h-[36dvh] flex-1 flex-col md:min-h-0 md:min-w-0">
-          <div className="flex h-full min-h-0 w-full flex-col items-center overflow-y-auto overscroll-contain px-3 py-4 md:overflow-hidden md:px-[10px] md:py-10">
+          <div className="flex h-full min-h-0 w-full flex-col items-center overflow-y-auto overscroll-y-auto px-3 py-4 md:overflow-hidden md:overscroll-y-auto md:px-[10px] md:py-10">
             <AnimatePresence
               mode="wait"
               initial={false}
