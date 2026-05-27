@@ -1,10 +1,11 @@
 import { useState } from "react";
 import type { QuizStep } from "../lib/quiz-schema";
 import { useQuiz } from "../context/QuizProvider";
-import { celebrateAnswer } from "../lib/answer-reward";
+import { celebrateAnswer, getMilestoneLevel, type MilestoneLevel } from "../lib/answer-reward";
 import { useSnapSectionActive } from "../hooks/useSnapSectionActive";
 import { ContentPanel } from "./ContentPanel";
 import { QuestionPanel } from "./QuestionPanel";
+import { StreakBurst } from "./StreakBurst";
 
 type KnowledgeCheckProps = {
   stepIndex: number;
@@ -20,6 +21,7 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
     totalQuestions,
   } = useQuiz();
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [milestone, setMilestone] = useState<MilestoneLevel>(null);
   const sectionId = `knowledge-${stepIndex}`;
   const { ref: sectionRef, isActive } = useSnapSectionActive(sectionId);
 
@@ -46,6 +48,8 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
       stepCompleted,
       quizJustCompleted,
     });
+
+    if (isCorrect) setMilestone(getMilestoneLevel(nextStreak));
   };
 
   const goBack = () => {
@@ -61,6 +65,8 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
   };
 
   return (
+    <>
+    <StreakBurst milestone={milestone} />
     <section
       ref={sectionRef}
       data-snap-section={sectionId}
@@ -96,5 +102,6 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
         </div>
       </div>
     </section>
+    </>
   );
 }

@@ -979,19 +979,35 @@ body {
 }
 
 body.answer-feedback--correct {
-  animation: reward-correct-flash 0.5s var(--ease-out-expo);
+  animation: reward-correct-flash 0.55s var(--ease-out-expo);
 }
 
 body.answer-feedback--wrong {
-  animation: reward-wrong-flash 0.42s var(--ease-out-expo);
+  animation: reward-wrong-flash 0.52s var(--ease-out-expo);
+}
+
+body.answer-feedback--streak-3 {
+  animation: reward-correct-flash 0.55s var(--ease-out-expo), streak-pulse-3 0.7s var(--ease-out-expo);
+}
+
+body.answer-feedback--streak-5 {
+  animation: reward-correct-flash 0.55s var(--ease-out-expo), streak-pulse-5 0.7s var(--ease-out-expo);
+}
+
+body.answer-feedback--streak-7 {
+  animation: reward-correct-flash 0.55s var(--ease-out-expo), streak-pulse-7 0.7s var(--ease-out-expo);
+}
+
+body.answer-feedback--streak-10 {
+  animation: reward-correct-flash 0.55s var(--ease-out-expo), streak-pulse-10 0.8s var(--ease-out-expo);
 }
 
 @keyframes reward-correct-flash {
   0% {
     box-shadow: inset 0 0 0 0 oklch(52% 0.16 145 / 0);
   }
-  35% {
-    box-shadow: inset 0 0 0 9999px oklch(52% 0.16 145 / 0.08);
+  30% {
+    box-shadow: inset 0 0 0 9999px oklch(52% 0.16 145 / 0.13);
   }
   100% {
     box-shadow: inset 0 0 0 0 oklch(52% 0.16 145 / 0);
@@ -1003,20 +1019,44 @@ body.answer-feedback--wrong {
     box-shadow: inset 0 0 0 0 oklch(52% 0.18 25 / 0);
     transform: translateX(0);
   }
-  20% {
-    transform: translateX(-3px);
+  15% {
+    transform: translateX(-5px);
   }
-  40% {
+  30% {
+    transform: translateX(5px);
+    box-shadow: inset 0 0 0 9999px oklch(52% 0.18 25 / 0.1);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+  70% {
     transform: translateX(3px);
-    box-shadow: inset 0 0 0 9999px oklch(52% 0.18 25 / 0.06);
-  }
-  60% {
-    transform: translateX(-2px);
   }
   100% {
     transform: translateX(0);
     box-shadow: inset 0 0 0 0 oklch(52% 0.18 25 / 0);
   }
+}
+
+@keyframes streak-pulse-3 {
+  0%, 100% { outline: 0px solid oklch(62% 0.2 145 / 0); }
+  40% { outline: 4px solid oklch(62% 0.2 145 / 0.35); }
+}
+
+@keyframes streak-pulse-5 {
+  0%, 100% { outline: 0px solid oklch(62% 0.22 55 / 0); }
+  40% { outline: 5px solid oklch(62% 0.22 55 / 0.4); }
+}
+
+@keyframes streak-pulse-7 {
+  0%, 100% { outline: 0px solid oklch(65% 0.22 290 / 0); }
+  40% { outline: 6px solid oklch(65% 0.22 290 / 0.45); }
+}
+
+@keyframes streak-pulse-10 {
+  0%, 100% { outline: 0px solid oklch(72% 0.22 55 / 0); }
+  20% { outline: 8px solid oklch(72% 0.22 55 / 0.55); }
+  60% { outline: 6px solid oklch(72% 0.22 55 / 0.3); }
 }
 
 @media (prefers-reduced-motion: reduce) {
