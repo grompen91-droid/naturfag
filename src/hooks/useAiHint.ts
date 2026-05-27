@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type HintState =
   | { status: "idle" }
@@ -13,7 +13,7 @@ type HintResponseBody =
 type UseAiHintProps = {
   questionKey: string;
   question: string;
-  options: string[];
+  options: readonly string[];
   correctIndex: number;
 };
 
@@ -21,13 +21,20 @@ export function useAiHint({ questionKey, question, options, correctIndex }: UseA
   const [hintState, setHintState] = useState<HintState>({ status: "idle" });
   const [explainState, setExplainState] = useState<HintState>({ status: "idle" });
   const cache = useRef<Map<string, string>>(new Map());
-  const lastKey = useRef<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  if (lastKey.current !== questionKey) {
-    lastKey.current = questionKey;
+  useEffect(() => {
     setHintState({ status: "idle" });
     setExplainState({ status: "idle" });
-  }
+    abortRef.current?.abort();
+    abortRef.current = null;
+  }, [questionKey]);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
 
   const fetchHint = useCallback(
     async (mode: "hint" | "explain", selectedIndex?: number) => {
@@ -39,6 +46,10 @@ export function useAiHint({ questionKey, question, options, correctIndex }: UseA
         return;
       }
 
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+
       if (mode === "hint") setHintState({ status: "loading" });
       else setExplainState({ status: "loading" });
 
@@ -47,6 +58,7 @@ export function useAiHint({ questionKey, question, options, correctIndex }: UseA
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ question, options, correctIndex, mode, selectedIndex }),
+          signal: controller.signal,
         });
         const data = (await res.json()) as HintResponseBody;
         if (data.available) {
@@ -57,7 +69,8 @@ export function useAiHint({ questionKey, question, options, correctIndex }: UseA
           if (mode === "hint") setHintState({ status: "error" });
           else setExplainState({ status: "error" });
         }
-      } catch {
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
         if (mode === "hint") setHintState({ status: "error" });
         else setExplainState({ status: "error" });
       }
