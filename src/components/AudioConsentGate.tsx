@@ -40,7 +40,7 @@ export function AudioConsentGate({
     dismissOnOutsideClick: false,
   });
 
-  const [duringTrack, setDuringTrack] = useState<DuringTrackId>("none");
+  const [duringTrack, setDuringTrack] = useState<DuringTrackId>("strategisk");
   const [endingTrack, setEndingTrack] = useState<EndingTrackId>("ending");
 
   useEffect(() => {

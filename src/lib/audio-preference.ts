@@ -20,6 +20,7 @@ export type AudioPreferences = {
 };
 
 const DEFAULT_ENDING: EndingTrackId = "ending";
+const DEFAULT_DURING: DuringTrackId = "strategisk";
 
 function normalizeEndingTrack(
   duringTrack: DuringTrackId,
@@ -56,7 +57,7 @@ export function readAudioPreferences(): AudioPreferences {
       (window.localStorage.getItem(AUDIO_CONSENT_KEY) as AudioConsentChoice | null) ??
       "no-audio";
     const duringTrack =
-      (window.localStorage.getItem(DURING_TRACK_KEY) as DuringTrackId | null) ?? "none";
+      (window.localStorage.getItem(DURING_TRACK_KEY) as DuringTrackId | null) ?? DEFAULT_DURING;
     const endingRaw = window.localStorage.getItem(ENDING_TRACK_KEY);
     const muted = window.localStorage.getItem(THEME_MUTED_KEY) === "1";
 
