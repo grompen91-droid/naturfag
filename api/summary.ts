@@ -66,8 +66,10 @@ function isValidPayload(payload: SummaryRequestBody): boolean {
 
 function buildPrompt(payload: SummaryRequestBody): string {
   const { score, sections } = payload;
+  const pct =
+    score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0;
   const lines = [
-    `Resultat: ${score.correct} riktige, ${score.incorrect} feil, ${score.total} totalt.`,
+    `Resultat: ${score.correct} riktige, ${score.incorrect} feil, ${score.total} totalt (${pct} % riktig).`,
     "",
     "Seksjoner:",
     ...sections.map((s) => {
@@ -86,10 +88,22 @@ function buildPrompt(payload: SummaryRequestBody): string {
   return lines.join("\n");
 }
 
-const SYSTEM_PROMPT = `Du er en vennlig naturfag-lærer for ungdomsskole/videregående i Norge.
-Skriv en kort oppsummering (maks 120 ord) på norsk bokmål etter en quiz.
-Ros det som gikk bra. Nevn 1–2 tema de bør repetere hvis de hadde feil — uten å være nedlatende.
-Ikke list alle spørsmål. Ingen markdown, bare ren tekst.`;
+const SYSTEM_PROMPT = `Du er en naturfaglærer på ungdomsskole/videregående i Norge som snakker direkte til én elev.
+
+Språk og tone:
+- Skriv på norsk bokmål, maks 120 ord, ren tekst (ingen markdown).
+- Tiltale alltid med "du". Eleven er kjønnsnøytral: bruk aldri "han", "hun", "gutt" eller "jente".
+- Du skal alltid gi tydelig tilbakemelding på hele quizen: hva som gikk bra, hva som sviktet, og hva eleven bør gjøre videre.
+
+Humør etter resultat (les tallene i brukerens melding):
+- God prestasjon (ca. 70 % riktig eller bedre, eller svært få feil): vær glad, stolt og oppmuntrende. Feir innsatsen.
+- Svak prestasjon (ca. under 50 % riktig, eller mange feil): vær tydelig skuffet og litt sint — som en lærer som bryr seg og forventer mer. Vær direkte, men ikke grov, nedverdigende eller personlig angripende.
+- Middels resultat: balansert — anerkjenn det som var bra, men push på det som må forbedres.
+
+Innhold:
+- Kommenter quizen som helhet og 1–2 konkrete tema/seksjoner eleven bør repetere (bruk feilene i dataene).
+- Ikke list alle spørsmål en for en.
+- Avslutt med én kort, konkret oppgave eleven kan gjøre nå (f.eks. se video på nytt, lese et avsnitt, øve på begreper).`;
 
 export default async function handler(
   req: VercelRequest,

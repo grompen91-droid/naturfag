@@ -1,11 +1,14 @@
 import { motion } from "motion/react";
-import { springSnappy, useMotionTransition } from "../lib/motion";
+import { answerRevealMotion, springSnap, tweenFast, useMotionTransition } from "../lib/motion";
+import { pressableHover, pressableTap } from "../lib/pressable-motion";
 
 type AnswerState = "neutral" | "correct" | "incorrect" | "selected-wrong";
 
 type AnswerButtonProps = {
+  optionNumber: number;
   label: string;
   state: AnswerState;
+  isHighlighted?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   onClick?: () => void;
@@ -25,16 +28,26 @@ const borderByState: Record<AnswerState, string> = {
   "selected-wrong": "var(--color-incorrect)",
 };
 
+function motionState(state: AnswerState): "neutral" | "correct" | "wrong" {
+  if (state === "correct") return "correct";
+  if (state === "selected-wrong") return "wrong";
+  return "neutral";
+}
+
 export function AnswerButton({
+  optionNumber,
   label,
   state,
+  isHighlighted = false,
   disabled = false,
   readOnly = false,
   onClick,
 }: AnswerButtonProps) {
   const isInteractive = !disabled && !readOnly && onClick;
-  const transition = useMotionTransition(springSnappy);
+  const transition = useMotionTransition(springSnap);
   const revealed = state !== "neutral";
+  const showHighlight = isHighlighted && state === "neutral";
+  const surfaceKey = motionState(state);
 
   return (
     <motion.button
@@ -42,10 +55,10 @@ export function AnswerButton({
       disabled={disabled || readOnly}
       onClick={onClick}
       className={[
-        "w-full max-w-[400px] border-2 border-solid px-4 py-4 text-left text-base leading-snug",
+        "answer-option min-w-0 flex-1 border-2 border-solid px-4 py-4 text-left text-base leading-snug",
         "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-blue)]/40",
+        showHighlight ? "answer-option--highlighted" : "",
         isInteractive ? "cursor-pointer" : "cursor-default",
-        disabled || readOnly ? "disabled:opacity-100" : "",
       ].join(" ")}
       style={{
         fontFamily: "var(--font-question)",
@@ -56,33 +69,23 @@ export function AnswerButton({
       animate={{
         borderColor: borderByState[state],
         backgroundColor: surfaceByState[state],
-        scale: revealed ? 1 : isInteractive ? 1 : 1,
+        ...answerRevealMotion(surfaceKey),
       }}
-      whileHover={
-        isInteractive && !revealed ? { scale: 1.01, filter: "brightness(0.98)" } : undefined
+      transition={
+        revealed && surfaceKey === "correct"
+          ? { type: "spring", stiffness: 320, damping: 24, mass: 0.9 }
+          : revealed
+            ? tweenFast
+            : transition
       }
-      whileTap={isInteractive && !revealed ? { scale: 0.99 } : undefined}
-      transition={transition}
-      layout
+      whileHover={
+        isInteractive && !revealed && !showHighlight ? pressableHover : undefined
+      }
+      whileTap={isInteractive && !revealed ? pressableTap : undefined}
       aria-pressed={revealed ? true : undefined}
+      aria-keyshortcuts={`${optionNumber}`}
     >
-      <motion.span
-        layout="position"
-        animate={
-          state === "correct"
-            ? { x: [0, 2, 0] }
-            : state === "selected-wrong"
-              ? { x: [0, -3, 3, -2, 0] }
-              : { x: 0 }
-        }
-        transition={
-          state === "selected-wrong"
-            ? { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-            : { duration: 0.2 }
-        }
-      >
-        {label}
-      </motion.span>
+      {label}
     </motion.button>
   );
 }

@@ -1,16 +1,20 @@
-import { useRef, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type ScrollSnapRootProps = {
   children: ReactNode;
+  className?: string;
 };
 
-export function ScrollSnapRoot({ children }: ScrollSnapRootProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
+export function ScrollSnapRoot({ children, className }: ScrollSnapRootProps) {
   return (
     <div
-      ref={ref}
-      className="h-[100dvh] w-full overflow-y-auto overscroll-y-contain"
+      data-scroll-root
+      className={[
+        "h-[100dvh] w-full min-w-0 overflow-y-auto overscroll-y-contain",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       style={{ scrollSnapType: "y mandatory" }}
     >
       {children}

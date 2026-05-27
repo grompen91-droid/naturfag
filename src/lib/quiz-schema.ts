@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { resolveVideoUrl } from "./resolve-video-url";
+import { shuffleQuizQuestions } from "./shuffle-questions";
 
 const questionSchema = z.object({
   text: z.string().min(1),
@@ -39,7 +40,8 @@ export async function loadQuiz(): Promise<QuizData> {
   }
   const json: unknown = await res.json();
   const steps = quizSchema.parse(json);
-  return steps.map((step) =>
+  const withVideos = steps.map((step) =>
     step.video ? { ...step, video: resolveVideoUrl(step.video) } : step,
   );
+  return shuffleQuizQuestions(withVideos);
 }

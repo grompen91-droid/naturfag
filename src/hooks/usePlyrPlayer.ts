@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import type Plyr from "plyr";
 import "plyr/dist/plyr.css";
 import { plyrOptions } from "../lib/plyr-config";
@@ -61,5 +61,12 @@ export function usePlyrPlayer(src: string) {
     };
   }, [src]);
 
-  return { hostRef, status, isPlaying };
+  const pause = useCallback(() => {
+    const player = playerRef.current;
+    if (player && !player.paused) {
+      player.pause();
+    }
+  }, []);
+
+  return { hostRef, status, isPlaying, pause };
 }

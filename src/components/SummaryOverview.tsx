@@ -3,7 +3,8 @@ import { useQuiz } from "../context/QuizProvider";
 import { useAiSummary } from "../hooks/useAiSummary";
 import { useSummaryConfetti } from "../hooks/useSummaryConfetti";
 import { makeQuestionKey } from "../lib/question-key";
-import { fadeUp, scaleIn, springSnappy, useMotionTransition } from "../lib/motion";
+import { fadeUp, scaleIn, springSnap, springSoft, useMotionTransition } from "../lib/motion";
+import { QuizHero } from "./QuizHero";
 import { ScoreSummary } from "./ScoreSummary";
 
 type SummaryOverviewProps = {
@@ -32,7 +33,8 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
   });
 
   const remaining = totalQuestions - answeredCount;
-  const transition = useMotionTransition(springSnappy);
+  const transition = useMotionTransition(springSnap);
+  const softTransition = useMotionTransition(springSoft);
 
   useSummaryConfetti({
     sectionRef: summaryOverviewRef,
@@ -44,13 +46,14 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
   return (
     <section
       ref={summaryOverviewRef}
-      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-always flex-col overflow-hidden bg-[var(--color-surface)] p-3 pt-14 md:px-16 md:py-10 md:pt-10"
+      data-snap-section="summary-overview"
+      className="flex min-h-[100dvh] w-full shrink-0 snap-start snap-stop flex-col bg-[var(--color-surface)] p-3 pt-14 md:px-12 md:py-10 md:pb-12"
       aria-labelledby="summary-heading"
     >
       <h2
         id="summary-heading"
         className="mb-1 text-2xl leading-tight md:text-[32px]"
-        style={{ fontFamily: "var(--font-title)", color: "var(--color-text)" }}
+        style={{ fontFamily: "var(--font-section)", color: "var(--color-text)" }}
       >
         Oppsummering
       </h2>
@@ -95,6 +98,7 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
             exit={{ opacity: 0 }}
             transition={transition}
           >
+            <QuizHero />
             <ScoreSummary
               correctCount={correctCount}
               incorrectCount={incorrectCount}
@@ -133,10 +137,16 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
                 transition={transition}
               >
                 <p
-                  className="mb-1 text-xs font-semibold uppercase tracking-wide"
+                  className="mb-0.5 text-xs font-semibold uppercase tracking-wide"
                   style={{ color: "var(--color-correct)" }}
                 >
                   Tilbakemelding
+                </p>
+                <p
+                  className="mb-2 text-xs"
+                  style={{ color: "var(--color-text-muted)" }}
+                >
+                  Generert av AI ut fra resultatene dine
                 </p>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--color-text)" }}>
                   {aiSummary.summary}
@@ -156,10 +166,7 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
         )}
       </AnimatePresence>
 
-      <div
-        className="min-h-0 flex-1 space-y-6 overflow-y-auto"
-        style={{ contentVisibility: "auto", containIntrinsicSize: "0 600px" }}
-      >
+      <div className="space-y-6 pb-2">
         {steps.map((step, stepIndex) => (
           <motion.div
             key={stepIndex}
@@ -170,8 +177,8 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
             transition={transition}
           >
             <h3
-              className="mb-2 text-xl leading-snug md:text-2xl"
-              style={{ fontFamily: "var(--font-title), cursive", color: "var(--color-text)" }}
+              className="mb-2 text-xl font-semibold leading-snug md:text-2xl"
+              style={{ fontFamily: "var(--font-section)", color: "var(--color-text)" }}
             >
               {step.title}
             </h3>
@@ -198,6 +205,11 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
 
                 const truncated =
                   q.text.length > 48 ? `${q.text.slice(0, 48)}…` : q.text;
+                const chipLabel = answered
+                  ? `Spørsmål ${questionIndex + 1}: ${q.text}. ${
+                      userAnswer.isCorrect ? "Riktig" : "Feil"
+                    }. Trykk for gjennomgang.`
+                  : `Spørsmål ${questionIndex + 1}: ${q.text}. Ikke besvart ennå.`;
 
                 return (
                   <motion.li
@@ -206,17 +218,14 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
                     initial="hidden"
                     animate="visible"
                     variants={scaleIn}
-                    transition={{ ...transition, delay: questionIndex * 0.03 }}
+                    transition={{ ...softTransition, delay: questionIndex * 0.04 }}
                   >
                     <motion.button
                       type="button"
                       onClick={() => answered && onJumpToReview(flatIndex)}
                       disabled={!answered}
-                      title={
-                        answered
-                          ? `${q.text} — trykk for gjennomgang`
-                          : "Besvar spørsmålet først"
-                      }
+                      aria-label={chipLabel}
+                      title={answered ? q.text : "Besvar spørsmålet først"}
                       className={[
                         "max-w-xs border-2 border-solid px-3 py-2 text-left text-sm leading-snug",
                         "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-blue)]/40",
