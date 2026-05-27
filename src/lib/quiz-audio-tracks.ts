@@ -1,4 +1,4 @@
-export type DuringTrackId = "none" | "theme" | "strategisk";
+export type DuringTrackId = "none" | "theme";
 export type EndingTrackId = "theme" | "ending" | "kjernens" | "strategisk";
 
 export type QuizTrack = {
@@ -48,10 +48,6 @@ export function getAvailableEndingTracks(
   return all.filter((id) => id !== duringTrack);
 }
 
-export function getDuringTrack(duringTrack: Exclude<DuringTrackId, "none">): QuizTrack {
-  if (duringTrack === "theme") return THEME_TRACK;
-  return { ...ENDING_TRACKS[duringTrack], loop: true };
-}
 
 export function getEndingTrackOptions(duringTrack: DuringTrackId): QuizTrack[] {
   return getAvailableEndingTracks(duringTrack).map((id) =>
