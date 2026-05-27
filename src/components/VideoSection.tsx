@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { motion } from "motion/react";
+import { ScrollHint } from "./ScrollHint";
+import { useQuizAudio } from "../context/QuizAudioProvider";
 import { usePlyrPlayer } from "../hooks/usePlyrPlayer";
+import { useSnapSectionActive } from "../hooks/useSnapSectionActive";
 import {
-  springSnappy,
+  scaleIn,
+  springSnap,
   staggerContainer,
   staggerItem,
   useMotionTransition,
@@ -14,15 +19,30 @@ type VideoSectionProps = {
 };
 
 export function VideoSection({ src, title }: VideoSectionProps) {
-  const { hostRef, status, isPlaying } = usePlyrPlayer(src);
-  const transition = useMotionTransition(springSnappy);
+  const { setVideoPlaying } = useQuizAudio();
+  const { hostRef, status, isPlaying, pause } = usePlyrPlayer(src);
+  const transition = useMotionTransition(springSnap);
   const containerVariants = useMotionVariants(staggerContainer);
   const itemVariants = useMotionVariants(staggerItem);
+  const frameVariants = useMotionVariants(scaleIn);
 
   const label = title ?? "Videoklipp";
+  const sectionId = `video-${label}`;
+  const { ref: sectionRef, isActive } = useSnapSectionActive(sectionId);
+
+  useEffect(() => {
+    if (!isActive) pause();
+  }, [isActive, pause]);
+
+  useEffect(() => {
+    setVideoPlaying(isActive && isPlaying);
+    return () => setVideoPlaying(false);
+  }, [isActive, isPlaying, setVideoPlaying]);
 
   return (
     <section
+      ref={sectionRef}
+      data-snap-section={sectionId}
       className="video-stage shrink-0 snap-start snap-always"
       aria-label={label}
     >
@@ -54,7 +74,7 @@ export function VideoSection({ src, title }: VideoSectionProps) {
             isPlaying ? "naturfag-player__frame--playing" : "",
             status === "ready" ? "naturfag-player__frame--ready" : "",
           ].join(" ")}
-          variants={itemVariants}
+          variants={frameVariants}
           layout={false}
         >
           {status === "loading" && (
@@ -90,9 +110,10 @@ export function VideoSection({ src, title }: VideoSectionProps) {
 
         <motion.p className="naturfag-player__hint" variants={itemVariants}>
           {status === "ready"
-            ? "Trykk play for å starte. Scroll ned når du er ferdig."
-            : "Scroll ned når du er ferdig med videoen"}
+            ? "Trykk play for å starte."
+            : "Se videoen før du går videre."}
         </motion.p>
+        <ScrollHint label="Scroll ned til spørsmålene" />
       </motion.div>
     </section>
   );

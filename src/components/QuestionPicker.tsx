@@ -1,4 +1,7 @@
+import { motion } from "motion/react";
 import type { FlatQuestion } from "../context/QuizProvider";
+import { pressableHover, pressableTap } from "../lib/pressable-motion";
+import { springSnappy, useMotionTransition } from "../lib/motion";
 
 type QuestionPickerProps = {
   questions: FlatQuestion[];
@@ -13,9 +16,11 @@ export function QuestionPicker({
   isComplete,
   onSelect,
 }: QuestionPickerProps) {
+  const transition = useMotionTransition(springSnappy);
+
   return (
     <div
-      className="mt-2 flex flex-wrap gap-2"
+      className="flex flex-wrap gap-2"
       role="list"
       aria-label="Spørsmål i steget"
     >
@@ -35,18 +40,21 @@ export function QuestionPicker({
             : "var(--color-incorrect-surface)";
         }
 
+        const label = `Spørsmål ${q.questionIndex + 1}: ${q.question.text}`;
+
         return (
-          <button
+          <motion.button
             key={q.flatIndex}
             type="button"
             role="listitem"
             onClick={() => onSelect(q.flatIndex)}
             disabled={!answered && !isComplete}
-            title={q.question.text}
+            title={label}
+            aria-label={label}
             className={[
               "min-h-[44px] min-w-[44px] border-2 border-solid px-3 py-2 text-sm font-medium",
-              "transition-[opacity,filter] duration-150 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-blue)]/40",
-              !answered && !isComplete ? "cursor-not-allowed opacity-45" : "hover:brightness-[0.97]",
+              "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-blue)]/40",
+              !answered && !isComplete ? "cursor-not-allowed opacity-45" : "",
             ].join(" ")}
             style={{
               fontFamily: "var(--font-question)",
@@ -60,9 +68,12 @@ export function QuestionPicker({
               outlineOffset: 2,
             }}
             aria-current={isActive ? "true" : undefined}
+            whileHover={answered || isComplete ? pressableHover : undefined}
+            whileTap={answered || isComplete ? pressableTap : undefined}
+            transition={transition}
           >
             {q.questionIndex + 1}
-          </button>
+          </motion.button>
         );
       })}
     </div>
