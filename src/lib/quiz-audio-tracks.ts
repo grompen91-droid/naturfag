@@ -1,5 +1,5 @@
 export type DuringTrackId = "none" | "theme";
-export type EndingTrackId = "theme" | "ending" | "kjernens" | "strategisk";
+export type EndingTrackId = "theme" | "ending" | "kjernens";
 
 export type QuizTrack = {
   id: EndingTrackId | "theme";
@@ -32,22 +32,15 @@ export const ENDING_TRACKS: Record<Exclude<EndingTrackId, "theme">, QuizTrack> =
     description: "Sangen om atomkraft og krefter i kjernen.",
     loop: false,
   },
-  strategisk: {
-    id: "strategisk",
-    src: "/Strategisk_sang_i_natt.mp3",
-    label: "Strategisk sang i natt",
-    description: "En sang om strategi og nattens hemmeligheter.",
-    loop: false,
-  },
 };
 
 export function getAvailableEndingTracks(
   duringTrack: DuringTrackId,
 ): EndingTrackId[] {
   if (duringTrack === "theme") {
-    return ["ending", "kjernens", "strategisk"];
+    return ["ending", "kjernens"];
   }
-  return ["theme", "ending", "kjernens", "strategisk"];
+  return ["theme", "ending", "kjernens"];
 }
 
 export function getEndingTrackOptions(duringTrack: DuringTrackId): QuizTrack[] {
