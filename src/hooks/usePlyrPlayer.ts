@@ -10,6 +10,7 @@ export function usePlyrPlayer(src: string) {
   const playerRef = useRef<Plyr | null>(null);
   const [status, setStatus] = useState<PlayerStatus>("loading");
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasEnded, setHasEnded] = useState(false);
 
   useLayoutEffect(() => {
     const host = hostRef.current;
@@ -18,6 +19,7 @@ export function usePlyrPlayer(src: string) {
     let cancelled = false;
     setStatus("loading");
     setIsPlaying(false);
+    setHasEnded(false);
 
     host.replaceChildren();
 
@@ -46,9 +48,14 @@ export function usePlyrPlayer(src: string) {
       const player = new PlyrConstructor(video, plyrOptions);
       playerRef.current = player;
 
-      player.on("play", () => setIsPlaying(true));
-      player.on("pause", () => setIsPlaying(false));
-      player.on("ended", () => setIsPlaying(false));
+      player.on("play", () => { if (!cancelled) setIsPlaying(true); });
+      player.on("pause", () => { if (!cancelled) setIsPlaying(false); });
+      player.on("ended", () => {
+        if (!cancelled) {
+          setIsPlaying(false);
+          setHasEnded(true);
+        }
+      });
     });
 
     return () => {
@@ -68,5 +75,5 @@ export function usePlyrPlayer(src: string) {
     }
   }, []);
 
-  return { hostRef, status, isPlaying, pause };
+  return { hostRef, status, isPlaying, hasEnded, pause };
 }

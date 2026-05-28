@@ -3,6 +3,7 @@ import type { QuizStep } from "../lib/quiz-schema";
 import { useQuiz } from "../context/QuizProvider";
 import { celebrateAnswer, getMilestoneLevel, type MilestoneLevel } from "../lib/answer-reward";
 import { useSnapSectionActive } from "../hooks/useSnapSectionActive";
+import { scrollToNextSection } from "../lib/scroll-next";
 import { ContentPanel } from "./ContentPanel";
 import { QuestionPanel } from "./QuestionPanel";
 import { StreakBurst } from "./StreakBurst";
@@ -50,6 +51,12 @@ export function KnowledgeCheck({ stepIndex, step }: KnowledgeCheckProps) {
     });
 
     if (isCorrect) setMilestone(getMilestoneLevel(nextStreak));
+
+    // Auto-scroll to next section once all questions in this step are done.
+    // Skip when quiz is complete — QuizProvider handles scrolling to summary.
+    if (stepCompleted && !quizJustCompleted) {
+      window.setTimeout(() => scrollToNextSection(sectionRef.current), 1100);
+    }
   };
 
   const goBack = () => {

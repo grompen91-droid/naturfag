@@ -4,6 +4,7 @@ import { ScrollHint } from "./ScrollHint";
 import { useQuizAudio } from "../context/QuizAudioProvider";
 import { usePlyrPlayer } from "../hooks/usePlyrPlayer";
 import { useSnapSectionActive } from "../hooks/useSnapSectionActive";
+import { scrollToNextSection } from "../lib/scroll-next";
 import {
   scaleIn,
   springSnap,
@@ -20,7 +21,7 @@ type VideoSectionProps = {
 
 export function VideoSection({ src, title }: VideoSectionProps) {
   const { setVideoPlaying } = useQuizAudio();
-  const { hostRef, status, isPlaying, pause } = usePlyrPlayer(src);
+  const { hostRef, status, isPlaying, hasEnded, pause } = usePlyrPlayer(src);
   const transition = useMotionTransition(springSnap);
   const containerVariants = useMotionVariants(staggerContainer);
   const itemVariants = useMotionVariants(staggerItem);
@@ -33,6 +34,12 @@ export function VideoSection({ src, title }: VideoSectionProps) {
   useEffect(() => {
     if (!isActive) pause();
   }, [isActive, pause]);
+
+  useEffect(() => {
+    if (!hasEnded || !isActive) return;
+    const t = window.setTimeout(() => scrollToNextSection(sectionRef.current), 900);
+    return () => window.clearTimeout(t);
+  }, [hasEnded, isActive, sectionRef]);
 
   useEffect(() => {
     setVideoPlaying(isActive && isPlaying);
