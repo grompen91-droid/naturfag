@@ -6,6 +6,7 @@ import { makeQuestionKey } from "../lib/question-key";
 import { fadeUp, scaleIn, springSnap, springSoft, useMotionTransition } from "../lib/motion";
 import { QuizHero } from "./QuizHero";
 import { ScoreSummary } from "./ScoreSummary";
+import { ShareButton } from "./ShareButton";
 
 type SummaryOverviewProps = {
   onJumpToReview: (flatIndex: number) => void;
@@ -20,6 +21,7 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
     incorrectCount,
     totalQuestions,
     answeredCount,
+    bestStreak,
     summaryOverviewRef,
   } = useQuiz();
 
@@ -103,6 +105,11 @@ export function SummaryOverview({ onJumpToReview }: SummaryOverviewProps) {
               correctCount={correctCount}
               incorrectCount={incorrectCount}
               totalQuestions={totalQuestions}
+            />
+            <ShareButton
+              correctCount={correctCount}
+              totalQuestions={totalQuestions}
+              bestStreak={bestStreak}
             />
             {aiSummary.status === "loading" && (
               <motion.div

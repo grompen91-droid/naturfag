@@ -45,6 +45,7 @@ type QuizContextValue = {
   correctCount: number;
   incorrectCount: number;
   correctStreak: number;
+  bestStreak: number;
   isComplete: boolean;
   reviewFlatIndex: number;
   setReviewFlatIndex: (index: number) => void;
@@ -69,6 +70,7 @@ export function QuizProvider({
     () => new Map(),
   );
   const [correctStreak, setCorrectStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
   const [reviewFlatIndex, setReviewFlatIndex] = useState(0);
   const [reviewStepIndex, setReviewStepIndex] = useState(0);
   const summaryOverviewRef = useRef<HTMLElement | null>(null);
@@ -118,7 +120,11 @@ export function QuizProvider({
         next.set(key, { selectedIndex, isCorrect });
         return next;
       });
-      setCorrectStreak((prev) => (isCorrect ? prev + 1 : 0));
+      setCorrectStreak((prev) => {
+        const next = isCorrect ? prev + 1 : 0;
+        setBestStreak((b) => Math.max(b, next));
+        return next;
+      });
     },
     [],
   );
@@ -168,6 +174,7 @@ export function QuizProvider({
     correctCount,
     incorrectCount,
     correctStreak,
+    bestStreak,
     isComplete,
     reviewFlatIndex,
     setReviewFlatIndex,
